@@ -3,7 +3,7 @@ function parseReqBody(req) {
     let reqBody = "";
     try {
       req.on("data", (chunk) => {
-        reqBody = reqBody + chunk;
+        (reqBody = reqBody + chunk), toString();
       });
 
       req.on("end", async () => {
