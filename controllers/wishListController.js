@@ -1,4 +1,5 @@
 const WishListModel = require("../models/wishListModel");
+const RequestUtils = require("../utils/requestHandlingUtil");
 
 async function getWishList(req, res) {
   try {
@@ -13,22 +14,15 @@ async function getWishList(req, res) {
 }
 
 async function addItemToList(req, res) {
-  let reqBody = "";
-  req.on("data", (chunk) => {
-    reqBody = reqBody + chunk;
-  });
-
-  req.on("end", async () => {
-    const { name, quantity } = JSON.parse(reqBody);
-
-    const item = { name, quantity };
-
-    const response = await WishListModel.addToList(item);
-
+  try {
+    const { name, quantity } = await RequestUtils.parseReqBody(req);
+    const newItem = { name, quantity };
+    const itemId = await WishListModel.addToList(newItem);
     res.writeHead(201, { "Content-Type": "application/json" });
-    res.write(JSON.stringify(response));
-    res.end();
-  });
+    res.end(JSON.stringify(itemId));
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 module.exports = { getWishList, addItemToList };

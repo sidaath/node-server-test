@@ -10,6 +10,7 @@ function getWishList() {
 
 function addToList(item) {
   const newItem = { id: __ID + 1, ...item };
+  __ID++;
   console.log("Adding item to aray");
   console.log(newItem);
 
