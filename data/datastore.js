@@ -1,5 +1,3 @@
-let id = 3;
-
 let wishListArray = [
   { id: 1, name: "ice cream 1L", quantity: 1 },
   { id: 2, name: "chocolate 300g", quantity: 2 },

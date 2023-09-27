@@ -12,4 +12,23 @@ async function getWishList(req, res) {
   }
 }
 
-module.exports = { getWishList };
+async function addItemToList(req, res) {
+  let reqBody = "";
+  req.on("data", (chunk) => {
+    reqBody = reqBody + chunk;
+  });
+
+  req.on("end", async () => {
+    const { name, quantity } = JSON.parse(reqBody);
+
+    const item = { name, quantity };
+
+    const response = await WishListModel.addToList(item);
+
+    res.writeHead(201, { "Content-Type": "application/json" });
+    res.write(JSON.stringify(response));
+    res.end();
+  });
+}
+
+module.exports = { getWishList, addItemToList };
