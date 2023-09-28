@@ -21,4 +21,21 @@ function addToList(item) {
   });
 }
 
-module.exports = { getWishList, addToList };
+function search(id) {
+  const searchResult = wishListArray.find((item) => item.id === Number(id));
+
+  return new Promise((resolve, reject) => {
+    resolve(searchResult);
+  });
+}
+
+function update(id, item) {
+  const index = wishListArray.findIndex((item) => item.id === Number(id));
+  wishListArray[index] = item;
+
+  return new Promise((resolve, reject) => {
+    resolve(wishListArray[index]);
+  });
+}
+
+module.exports = { getWishList, addToList, search, update };

@@ -10,6 +10,9 @@ const server = http.createServer((req, res) => {
   } else if (req.url === "/wishlist" && req.method === "POST") {
     WishListController.addItemToList(req, res);
     return;
+  } else if (req.url.match(/\/wishlist\/([0-9]+)/) && req.method === "PUT") {
+    const id = req.url.split("/")[2];
+    WishListController.updateItem(req, res, id);
   } else {
     res.writeHead(404, { message: "Not found" });
     res.end();

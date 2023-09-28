@@ -25,4 +25,31 @@ async function addItemToList(req, res) {
   }
 }
 
-module.exports = { getWishList, addItemToList };
+async function getItemById(id) {
+  const item = await WishListModel.search(id);
+  return item;
+}
+
+async function updateItem(req, res, id) {
+  const oldItem = await getItemById(id);
+
+  if (oldItem === undefined) {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end("Item not in wishlist");
+  } else {
+    const body = await RequestUtils.parseReqBody(req);
+
+    const updatedItem = {
+      id: id,
+      name: body.name || oldItem.name,
+      quantity: body.quantity || oldItem.quantity,
+    };
+
+    const updateResponse = await WishListModel.update(id, updatedItem);
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(updateResponse));
+  }
+}
+
+module.exports = { getWishList, addItemToList, updateItem };
