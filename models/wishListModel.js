@@ -38,4 +38,16 @@ function update(id, item) {
   });
 }
 
-module.exports = { getWishList, addToList, search, update };
+function deleteItem(id) {
+  return new Promise((resolve, reject) => {
+    const deleteIndex = wishListArray.findIndex(
+      (item) => item.id === Number(id)
+    );
+    const deletedItem = wishListArray[deleteIndex];
+    wishListArray.splice(deleteIndex, 1);
+
+    resolve(deletedItem);
+  });
+}
+
+module.exports = { getWishList, addToList, search, update, deleteItem };

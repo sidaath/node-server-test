@@ -30,7 +30,7 @@ async function getItemById(id) {
   return item;
 }
 
-async function updateItem(req, res, id) {
+async function updateWishlistItem(req, res, id) {
   const oldItem = await getItemById(id);
 
   if (oldItem === undefined) {
@@ -52,4 +52,19 @@ async function updateItem(req, res, id) {
   }
 }
 
-module.exports = { getWishList, addItemToList, updateItem };
+async function deleteWishlistItem(req, res, id) {
+  try {
+    const deletedItem = await WishListModel.deleteItem(id);
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(deletedItem));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+module.exports = {
+  getWishList,
+  addItemToList,
+  updateItem: updateWishlistItem,
+  deleteWishlistItem,
+};
